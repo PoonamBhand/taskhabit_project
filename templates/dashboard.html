@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">Tasks</div>
+      <div class="card-body">
+        <p>Manage your tasks with due dates and groups.</p>
+        <a href="{% url 'task_list' %}" class="btn btn-outline-primary">View Tasks</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white">Habits</div>
+      <div class="card-body">
+        <p>Track your habits with goals and frequencies.</p>
+        <a href="{% url 'habit_list' %}" class="btn btn-outline-success">View Habits</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
