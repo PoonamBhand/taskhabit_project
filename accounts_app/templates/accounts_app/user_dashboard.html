@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Welcome {{ user.username }}</h1>
+
+<h2>Tasks Completed This Week</h2>
+<canvas id="taskChart"></canvas>
+
+<h2>Habit Performance</h2>
+<canvas id="habitChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const taskData = {{ tasks_per_day|safe }};
+const habitData = {{ habits_data|safe }};
+
+// Task chart
+const ctxTask = document.getElementById('taskChart').getContext('2d');
+new Chart(ctxTask, {
+    type: 'bar',
+    data: {
+        labels: Object.keys(taskData),
+        datasets: [{
+            label: 'Tasks Completed',
+            data: Object.values(taskData),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: { responsive: true }
+});
+
+// Habit chart
+const ctxHabit = document.getElementById('habitChart').getContext('2d');
+new Chart(ctxHabit, {
+    type: 'line',
+    data: {
+        labels: Object.keys(habitData),
+        datasets: [{
+            label: 'Habit Completion %',
+            data: Object.values(habitData),
+            fill: false,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            tension: 0.1
+        }]
+    },
+    options: { responsive: true }
+});
+</script>
+{% endblock %}

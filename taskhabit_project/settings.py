@@ -10,7 +10,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []   # empty list = allow localhost in DEBUG mode
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,12 +18,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # our custom apps
-    'accounts_app',
+    # Your apps
     'task_app',
     'habit_app',
+    'accounts_app',
+     'reports_app',
+    'widget_tweaks',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -41,7 +41,7 @@ ROOT_URLCONF = 'taskhabit_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / "templates" ],  # 👈 points to global templates
+        'DIRS': [BASE_DIR / 'templates'],  # 👈 add this line
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,11 +89,13 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]  # optional if using global static folder
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auth redirect setup
-LOGIN_REDIRECT_URL = 'profile'
-LOGOUT_REDIRECT_URL = 'login'
-LOGIN_URL = 'login'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'   # after login → dashboard
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+

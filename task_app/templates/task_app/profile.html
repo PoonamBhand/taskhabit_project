@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h2>User Profile</h2>
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>First Name:</strong> {{ user.first_name }}</p>
+<p><strong>Last Name:</strong> {{ user.last_name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+
+<hr>
+
+{% if tasks %}
+<h3>Your Tasks</h3>
+<ul>
+    {% for task in tasks %}
+        <li>{{ task.title }} - {% if task.status == "Done" %}Completed{% else %}Pending{% endif %}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if habits %}
+<h3>Your Habits</h3>
+<ul>
+    {% for habit in habits %}
+        <li>{{ habit.name }} - {{ habit.frequency }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<p><a href="{% url 'logout' %}">Logout</a></p>
+{% endblock %}

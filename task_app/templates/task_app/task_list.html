@@ -1,11 +1,34 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-  <h2>Your Tasks</h2>
-  <ul>
-    {% for task in tasks %}
-      <li>{{ task.title }} - {{ task.due_date }}</li>
-    {% empty %}
-      <li>No tasks found.</li>
-    {% endfor %}
-  </ul>
+<div class="container mt-4">
+    <h2>Your Tasks</h2>
+    <a href="{% url 'task_create' %}" class="btn btn-primary mb-3">➕ Add Task</a>
+
+    {% if tasks %}
+        <ul class="list-group">
+            {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ task.title }}</strong> ({{ task.priority }}) - {{ task.due_date }}
+                        {% if task.status == "Pending" %}
+                            ❌ Pending
+                        {% else %}
+                            ✅ Done
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="{% url 'task_toggle_status' task.pk %}" class="btn btn-sm btn-warning">Toggle Status</a>
+                        <a href="{% url 'task_edit' task.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                        <form action="{% url 'task_delete' task.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks found. <a href="{% url 'task_create' %}">Create one now</a>.</p>
+    {% endif %}
+</div>
 {% endblock %}

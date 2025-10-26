@@ -1,11 +1,23 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-  <h2>Your Habits</h2>
-  <ul>
-    {% for habit in habits %}
-      <li>{{ habit.name }} - {{ habit.frequency }}</li>
-    {% empty %}
-      <li>No habits found.</li>
-    {% endfor %}
-  </ul>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Your Habits</h2>
+        <a href="{% url 'habit_create' %}" class="btn btn-success">➕ Add Habit</a>
+    </div>
+    <ul class="list-group">
+        {% for habit in habits %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ habit.name }} - {{ habit.frequency }} - Goal: {{ habit.goal }}
+            <span>
+                <a href="{% url 'habit_edit' habit.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'habit_delete' habit.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </span>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No habits added yet.</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

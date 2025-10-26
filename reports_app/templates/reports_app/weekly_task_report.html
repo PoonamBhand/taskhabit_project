@@ -1,0 +1,117 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Task Report</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px; /* ✅ Medium size */
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            height: 300px !important; /* ✅ Chart fits on screen */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center mb-4">📊 Weekly Task Completion Report</h2>
+
+    <canvas id="weeklyTaskChart"></canvas>
+
+    <hr>
+    <table class="table table-bordered text-center mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Completed Tasks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day in report_data %}
+            <tr>
+                <td>{{ day.date }}</td>
+                <td>{{ day.completed }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-center mt-3">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary btn-sm">⬅ Back to Dashboard</a>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('weeklyTaskChart').getContext('2d');
+    const weeklyTaskChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for d in report_data %}'{{ d.date }}',{% endfor %}],
+            datasets: [{
+                label: 'Completed Tasks',
+                data: [{% for d in report_data %}{{ d.completed }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+</script>
+
+<h2 class="text-center mb-4">📅 Weekly Habit Performance</h2>
+
+<script>
+    const ctx = document.getElementById('weeklyHabitChart').getContext('2d');
+    const weeklyHabitChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for d in report_data %}'{{ d.date }}',{% endfor %}],
+            datasets: [{
+                label: 'Completed Habits',
+                data: [{% for d in report_data %}{{ d.completed }},{% endfor %}],
+                borderColor: 'rgba(255, 99, 132, 0.8)',
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
+
+</body>
+</html>

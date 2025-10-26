@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>User Details: {{ user.username }}</h2>
+<p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+
+<h3>Tasks</h3>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Created At</th>
+        <th>Due Date</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.created_at }}</td>
+        <td>{{ task.due_date }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No tasks</td></tr>
+    {% endfor %}
+</table>
+
+<h3>Habits</h3>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Name</th>
+        <th>Frequency</th>
+        <th>Created At</th>
+    </tr>
+    {% for habit in habits %}
+    <tr>
+        <td>{{ habit.name }}</td>
+        <td>{{ habit.frequency }}</td>
+        <td>{{ habit.created_at }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No habits</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

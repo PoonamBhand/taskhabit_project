@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+        <h2 class="text-center mb-2 fw-bold text-primary">📊 Dashboard</h2>
+        <p class="text-center text-muted mb-4">Track your daily progress and stay consistent 💪</p>
+
+        <!-- Weekly Summary Section -->
+        <div class="row text-center mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card border-success shadow-sm rounded-4 p-3 bg-white">
+                    <h5 class="text-success fw-semibold">✅ Completed Tasks (This Week)</h5>
+                    <h3 class="text-success fw-bold mt-2">{{ completed_count }}</h3>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card border-warning shadow-sm rounded-4 p-3 bg-white">
+                    <h5 class="text-warning fw-semibold">🕒 Pending Tasks (This Week)</h5>
+                    <h3 class="text-warning fw-bold mt-2">{{ pending_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- Today's Pending Tasks Section -->
+        <h4 class="fw-bold text-primary mb-3">📅 Today’s Pending Tasks</h4>
+        {% if todays_pending %}
+            <div class="card shadow-sm rounded-4 p-3 bg-white mb-4">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Task</th>
+                            <th>Priority</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in todays_pending %}
+                            <tr>
+                                <td class="fw-semibold">{{ task.title }}</td>
+                                <td>
+                                    {% if task.priority == 'High' %}
+                                        <span class="badge bg-danger">{{ task.priority }}</span>
+                                    {% elif task.priority == 'Medium' %}
+                                        <span class="badge bg-warning text-dark">{{ task.priority }}</span>
+                                    {% else %}
+                                        <span class="badge bg-success">{{ task.priority }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ task.due_date }}</td>
+                                <td>
+                                    {% if task.status == 'Done' %}
+                                        <span class="badge bg-success">Done</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Pending</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center rounded-4 shadow-sm">No pending tasks for today 🎉</div>
+        {% endif %}
+
+        <!-- Today's Habits Section -->
+        <h4 class="fw-bold text-primary mt-5 mb-3">💪 Habits to Complete Today</h4>
+        {% if todays_habits %}
+            <div class="card shadow-sm rounded-4 p-3 bg-white">
+                <ul class="list-group list-group-flush">
+                    {% for habit in todays_habits %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold">{{ habit.name }}</span>
+                            <span class="badge bg-info text-dark">{{ habit.frequency }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center rounded-4 shadow-sm">No habits scheduled for today 🎯</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

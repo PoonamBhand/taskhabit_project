@@ -1,0 +1,54 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user.username }} - Habits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-primary">Habits by {{ user.username }}</h2>
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+
+        {% if habits %}
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Title</th>
+                        <th>Frequency</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for habit in habits %}
+                    <tr>
+                        <td>{{ habit.title }}</td>
+                        <td>{{ habit.frequency }}</td>
+                        <td>
+                            <span class="badge
+                                {% if habit.status == 'Done' %}bg-success
+                                {% elif habit.status == 'In Progress' %}bg-warning text-dark
+                                {% else %}bg-secondary
+                                {% endif %}">
+                                {{ habit.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5 text-muted fs-5">
+            No habits found for this user. Create one now.
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
